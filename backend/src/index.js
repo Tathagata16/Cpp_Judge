@@ -12,7 +12,7 @@ dotenv.config();
 
 const app = express();
 
-// ── Middleware ────────────────────────────────────────────
+
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
   credentials: true,
@@ -33,7 +33,7 @@ app.use('/api/submissions', rateLimit({
   message: { error: 'Submission rate limit exceeded. Wait a minute.' },
 }));
 
-// ── Routes ────────────────────────────────────────────────
+//R
 app.use('/api/auth', authRoutes);
 app.use('/api/problems', problemRoutes);
 app.use('/api/submissions', submissionRoutes);
