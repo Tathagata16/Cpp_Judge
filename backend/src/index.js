@@ -11,7 +11,7 @@ import profileRoutes from './routes/profile.js';
 dotenv.config();
 
 const app = express();
-
+app.set('trust proxy', 1); // ← add this
 
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
