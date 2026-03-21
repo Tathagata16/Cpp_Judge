@@ -123,6 +123,7 @@ async function runTestCase(code, input, expectedOutput) {
 
     clearTimeout(fetchTimer);
     const data = await response.json();
+    console.log("PISTON RESPONSE:", JSON.stringify(data, null, 2)); 
 
     // Fix 4: Catch compile errors separately before checking run stderr
     if (data.compile?.stderr) {
