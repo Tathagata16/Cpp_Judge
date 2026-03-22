@@ -125,7 +125,7 @@ REST API (Backend)
 | ORM               | Mongoose                             |
 | Authentication    | JWT                                  |
 | Password Security | bcrypt                               |
-| Judge System      | g++ compiler with isolated execution |
+| Judge System      | Judge0 online sandbox                |
 | Deployment        | Cloud hosting platforms              |
 
 ---
