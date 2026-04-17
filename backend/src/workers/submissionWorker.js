@@ -57,6 +57,22 @@ const worker = new Worker('submission-queue', async (job) => {
     }
 
 },{ connection });
+
+
+
+console.log("🚀 Worker started");
+
+worker.on('active', job => {
+  console.log("⚡ Job active:", job.id);
+});
+
+worker.on('completed', job => {
+  console.log("✅ Job completed:", job.id);
+});
+
+worker.on('failed', (job, err) => {
+  console.error("❌ Job failed:", err);
+});
     
 
 
