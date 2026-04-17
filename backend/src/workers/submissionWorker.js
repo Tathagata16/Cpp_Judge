@@ -11,7 +11,7 @@ dotenv.config();
 await connectDB();
 // console.log("Worker DB connected");
 
-const connection = new Redis(process.env.REDIS_URL || 'redis://127.0.0.1:6379',{
+const connection = new Redis(process.env.REDIS_URL ,{
     maxRetriesPerRequest: null,
 });
 
