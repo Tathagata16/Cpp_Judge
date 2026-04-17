@@ -52,7 +52,7 @@ const worker = new Worker('submission-queue', async (job) => {
     }catch(err){
         console.error(`Error processing submission ${submissionId}:`, err);
         await Submission.findByIdAndUpdate(submissionId, {
-            status: 'Runtime error',
+            status: 'Runtime Error',
             error: err.message,
         });
     }
