@@ -5,11 +5,11 @@ import Submission from "../models/Submission.js";
 import { runCppCode } from "../services/judge.js";
 import {connectDB} from '../services/db.js'
 import dotenv from 'dotenv'
+dotenv.config();
+await connectDB();
 
 console.log("REDIS_URL:", process.env.REDIS_URL);
 
-dotenv.config();
-await connectDB();
 // console.log("Worker DB connected");
 
 const connection = new Redis(process.env.REDIS_URL ,{
