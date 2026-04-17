@@ -21,6 +21,7 @@ export async function signup(req, res) {
     const token = signToken(user._id);
     res.status(201).json({ token, user });
   } catch (err) {
+    // console.log(err);
     res.status(500).json({ error: err.message });
   }
 }
@@ -38,6 +39,7 @@ export async function login(req, res) {
     const token = signToken(user._id);
     res.json({ token, user });
   } catch (err) {
+    // console.log(err)
     res.status(500).json({ error: err.message });
   }
 }

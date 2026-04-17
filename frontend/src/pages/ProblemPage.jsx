@@ -4,17 +4,17 @@ import Editor from '@monaco-editor/react';
 import api from '../utils/api.js';
 
 const DIFF_COLOR = {
-  Easy:   'text-emerald-400',
+  Easy: 'text-emerald-400',
   Medium: 'text-yellow-400',
-  Hard:   'text-red-400',
+  Hard: 'text-red-400',
 };
 
 const STATUS_STYLE = {
-  'Accepted':              'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-  'Wrong Answer':          'bg-red-500/15 text-red-400 border-red-500/30',
-  'Compile Error':         'bg-orange-500/15 text-orange-400 border-orange-500/30',
-  'Runtime Error':         'bg-red-500/15 text-red-400 border-red-500/30',
-  'Time Limit Exceeded':   'bg-purple-500/15 text-purple-400 border-purple-500/30',
+  'Accepted': 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
+  'Wrong Answer': 'bg-red-500/15 text-red-400 border-red-500/30',
+  'Compile Error': 'bg-orange-500/15 text-orange-400 border-orange-500/30',
+  'Runtime Error': 'bg-red-500/15 text-red-400 border-red-500/30',
+  'Time Limit Exceeded': 'bg-purple-500/15 text-purple-400 border-purple-500/30',
 };
 
 function StatusBadge({ status }) {
@@ -57,11 +57,10 @@ function ResultPanel({ result, mode }) {
           {result.results.map((r, i) => (
             <div
               key={i}
-              className={`text-xs font-mono px-3 py-2 rounded border flex flex-wrap items-center gap-x-4 gap-y-1 ${
-                r.passed
-                  ? 'border-emerald-500/20 bg-emerald-900/10'
-                  : 'border-red-500/20 bg-red-900/10'
-              }`}
+              className={`text-xs font-mono px-3 py-2 rounded border flex flex-wrap items-center gap-x-4 gap-y-1 ${r.passed
+                ? 'border-emerald-500/20 bg-emerald-900/10'
+                : 'border-red-500/20 bg-red-900/10'
+                }`}
             >
               <span className={r.passed ? 'text-emerald-400' : 'text-red-400'}>
                 {r.passed ? '✓' : '✗'} Case {i + 1}
@@ -91,9 +90,9 @@ export default function ProblemPage() {
   const { slug } = useParams();
   const [problem, setProblem] = useState(null);
   const [code, setCode] = useState('');
-  const [running, setRunning]   = useState(false);
+  const [running, setRunning] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [result, setResult]   = useState(null);
+  const [result, setResult] = useState(null);
   const [resultMode, setResultMode] = useState(null); // 'run' | 'submit'
   const [activeTab, setActiveTab] = useState('description');
   const [submissions, setSubmissions] = useState([]);
@@ -122,14 +121,43 @@ export default function ProblemPage() {
     }
   };
 
-  // ── Submit (all test cases, saved to DB) ────────────────────────────────
+  //polling function for ui change after queue finishes job
+  const pollSubmission = (submissionId) => {
+    const interval = setInterval(async () => {
+      try {
+        const { data } = await api.get(`/api/submissions/${submissionId}`);
+
+        const submission = data.submission;
+
+        setResult({
+          status: submission.status,
+          results: submission.results,
+          error: submission.error
+        });
+
+        // ✅ STOP when done
+        if (submission.status !== 'pending') {
+          clearInterval(interval);
+        }
+
+      } catch (err) {
+        console.error(err);
+        clearInterval(interval);
+      }
+    }, 2000); // every 2 seconds
+  };
+  // ── Submit (all test cases, saved to DB) 
+  // ────────────────────────────────
   const handleSubmit = async () => {
     setSubmitting(true);
     setResult(null);
     try {
       const { data } = await api.post('/api/submissions', { problemSlug: slug, code });
-      setResult({ ...data, results: data.submission?.results, error: data.submission?.error });
-      setResultMode('submit');
+
+      //start polling
+      const submissionId = data.submissionId;
+      pollSubmission(submissionId);
+
     } catch (err) {
       setResult({ status: 'Runtime Error', error: err.response?.data?.error || 'Unknown error', results: [] });
       setResultMode('submit');
@@ -167,11 +195,10 @@ export default function ProblemPage() {
             <button
               key={tab}
               onClick={() => switchTab(tab)}
-              className={`px-4 py-3 text-sm capitalize transition-colors ${
-                activeTab === tab
-                  ? 'text-white border-b-2 border-emerald-400'
-                  : 'text-gray-400 hover:text-white'
-              }`}
+              className={`px-4 py-3 text-sm capitalize transition-colors ${activeTab === tab
+                ? 'text-white border-b-2 border-emerald-400'
+                : 'text-gray-400 hover:text-white'
+                }`}
             >
               {tab}
             </button>

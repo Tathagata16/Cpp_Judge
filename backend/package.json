@@ -4,14 +4,17 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "worker": "node src/workers/submissionWorker.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "bullmq": "^5.74.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-rate-limit": "^7.3.1",
+    "ioredis": "^5.10.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.0",
     "node-fetch": "^3.3.2"

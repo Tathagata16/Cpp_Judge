@@ -13,10 +13,23 @@ dotenv.config();
 const app = express();
 app.set('trust proxy', 1); // ← add this
 
+const allowedOrigins = [
+  // 'http://localhost:5173',
+  'https://leetcode-simplified-clone.vercel.app'
+];
+
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
