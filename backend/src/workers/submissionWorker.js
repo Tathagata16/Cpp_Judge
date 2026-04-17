@@ -6,6 +6,7 @@ import { runCppCode } from "../services/judge.js";
 import {connectDB} from '../services/db.js'
 import dotenv from 'dotenv'
 
+console.log("REDIS_URL:", process.env.REDIS_URL);
 
 dotenv.config();
 await connectDB();
