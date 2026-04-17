@@ -22,6 +22,7 @@ const worker = new Worker('submission-queue', async (job) => {
     const { submissionId, problemSlug, code } = job.data;
 
     try{
+        console.log('Processing job 💀💀📍')
         const problem = await Problem.findOne({ slug: problemSlug });
         if (!problem) throw new Error('Problem not found');
 
