@@ -220,10 +220,9 @@ These measures help ensure safe code execution.
 
 Potential enhancements for the platform:
 
-* Leaderboard system
-* Additional programming languages
-* Problem discussions
-* Code sharing links
+* Contest
+* Additional programming language
+* Ai code Review/Hint/Full Solution
 * Markdown support for problem descriptions
 * Larger problem library
 
